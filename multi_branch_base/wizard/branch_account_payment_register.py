@@ -43,7 +43,7 @@ class AccountPaymentRegister(models.TransientModel):
             for wizard in self:
                 domain = [
                     ('type', 'in', ('bank', 'cash')),
-                    ('branch_id', '=', branch.id),
+                    ('branch_id', 'in', branch.mapped('id')),
                 ]
                 journal = None
                 if wizard.source_currency_id:
