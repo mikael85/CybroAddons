@@ -22,6 +22,10 @@
 
 from odoo import models, fields, api
 
+import logging
+_logger = logging.getLogger(__name__)
+
+
 
 class AccountPaymentRegister(models.TransientModel):
     """inherited account payment register wizard models"""
@@ -75,7 +79,11 @@ class AccountPaymentRegister(models.TransientModel):
         """create payment values"""
         self.ensure_one()
         lines = self.line_ids._origin
+        _logger.info('lines: ')
+        _logger.info(lines)
         branch = lines.branch_id
+        _logger.info('branch: ')
+        _logger.info(branch)
         payment_vals = {
             'date': self.payment_date,
             'amount': self.amount,
@@ -83,7 +91,7 @@ class AccountPaymentRegister(models.TransientModel):
             'partner_type': self.partner_type,
             'ref': self.communication,
             'journal_id': self.journal_id.id,
-            'branch_id': branch.id,
+            'branch_id': branch[0].id,
             'currency_id': self.currency_id.id,
             'partner_id': self.partner_id.id,
             'partner_bank_id': self.partner_bank_id.id,
